@@ -239,3 +239,24 @@ spiffs_create_partition_image(
     FLASH_IN_PROJECT)
 
 ```
+
+#### 2.2 编译配置
+```bash
+idf.py menuconfig
+```
+1. 修改分区表，指定使用 `partitions_html.csv`
+- `Partition Table --->` 
+    - `Partition Table` 选择 `(x) Custom partition table CSV`
+    - `Custom partition CSV file` ---> `partitions_html.csv`
+
+```
+# Name,   Type, SubType, Offset,  Size, Flags
+# Note: if you have increased the bootloader size, make sure to update the offsets to avoid overlap
+nvs,      data, nvs,     ,        0x6000,
+phy_init, data, phy,     ,        0x1000,
+factory,  app,  factory, ,        1500K,
+html,     data, spiffs,  ,        20K,
+```
+
+2. 开启 `websocket`
+- `Component config --->` `HTTP Server --->` `[*] WebSocket server support`
